@@ -37,13 +37,24 @@ mut:
 	direction Vector
 	speed int = 2
 	bullets []Projectile
-	bombs int = 3
+	bomb_count int = 3
+	bombs []Bomb
 	state State
 }
 
 fn (mut p Player) update() {
 	p.x += p.direction.x
 	p.y += p.direction.y
+
+	if p.state.has(.bombing) {
+		if p.bomb_count > 0 {
+			p.bomb_count--
+			p.bombs << Bomb{Position{p.x, p.y}, 0.0}
+		}
+	}
+	for mut bomb in p.bombs {
+		bomb.update()
+	}
 
 	if p.state.has(.shooting) {
 		p.bullets << Projectile{ Position{p.x, p.y}, Size{10, 10}, Vector{0, -5} }
@@ -55,6 +66,11 @@ fn (mut p Player) update() {
 
 fn (p Player) draw(g Game) {
 	g.ctx.draw_rect_filled(p.x, p.y, p.w, p.h, gx.white)
+	
+	for bomb in p.bombs {
+		bomb.draw(g)
+	}
+	
 	for bullet in p.bullets {
 		g.ctx.draw_rect_filled(bullet.x, bullet.y, bullet.w, bullet.h, gx.yellow)
 	}
@@ -87,6 +103,20 @@ mut:
 fn (mut p Projectile) update() {
 	p.x += p.direction.x
 	p.y += p.direction.y
+}
+
+struct Bomb {
+	Position
+mut:
+	radius f32
+}
+
+fn (mut b Bomb) update() {
+	b.radius += 2
+}
+
+fn (b Bomb) draw(g Game) {
+	g.ctx.draw_circle_empty(b.x, b.y, b.radius, gx.yellow)
 }
 
 struct Game {
@@ -132,7 +162,7 @@ fn (mut g Game) event(eve &gg.Event, _ voidptr) {
 
 fn main() {
 	mut game := &Game{}
-	mut player := Player { Position {100, 300}, Size {25, 50}, Vector {0, 0}, 2, []Projectile{}, 3, State.idle }
+	mut player := Player { Position {100, 300}, Size {25, 50}, Vector {0, 0}, 2, []Projectile{}, 3, []Bomb{}, State.idle }
 	game.ctx = gg.new_context(
 			bg_color: gx.black
 			width: 600
