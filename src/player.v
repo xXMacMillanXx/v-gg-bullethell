@@ -7,16 +7,16 @@ struct Player {
 	Size
 mut:
 	direction Vector
-	speed int = 2
+	speed int = 50
 	bullets []Projectile
 	bomb_count int = 3
 	bombs []Bomb
 	state State
 }
 
-fn (mut p Player) update() {
-	p.x += p.direction.x
-	p.y += p.direction.y
+fn (mut p Player) update(delta f32) {
+	p.x += p.direction.x * delta
+	p.y += p.direction.y * delta
 
 	if p.state.has(.bombing) {
 		if p.bomb_count > 0 {

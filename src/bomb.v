@@ -8,6 +8,7 @@ mut:
 	radius f32
 }
 
+// needs delta for controlled bombing? bombing cooldown
 fn (mut b Bomb) update() {
 	b.radius += 2
 }

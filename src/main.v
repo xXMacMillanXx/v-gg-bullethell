@@ -2,6 +2,7 @@ module main
 
 import gg
 import gx
+import time
 
 [flag]
 enum State {
@@ -12,22 +13,22 @@ enum State {
 
 struct Position {
 mut:
-	x int
-	y int
-	// z int
+	x f32
+	y f32
+	// z f32
 }
 
 struct Vector {
 mut:
-	x int
-	y int
-	// z int
+	x f32
+	y f32
+	// z f32
 }
 
 struct Size {
-	w int
-	h int
-	// d int
+	w f32
+	h f32
+	// d f32
 }
 
 struct Game {
@@ -35,10 +36,11 @@ mut:
 	ctx gg.Context
 	player Player
 	enemies []Enemy
+	frame_timer time.StopWatch = time.new_stopwatch()
 }
 
-fn (mut g Game) update() {
-	g.player.update()
+fn (mut g Game) update(delta f32) {
+	g.player.update(delta)
 	for mut enemy in g.enemies {
 		enemy.update()
 	}
@@ -54,8 +56,12 @@ fn (mut g Game) draw() {
 }
 
 fn (mut g Game) frame(_ voidptr) {
-	g.update()
+	delta := f32(g.frame_timer.elapsed().milliseconds()) / 1000
+	g.frame_timer.restart()
+	// println(delta)
+	g.update(delta)
 	g.draw()
+	// println(g.ctx.frame)
 }
 
 fn (mut g Game) event(eve &gg.Event, _ voidptr) {
@@ -73,7 +79,7 @@ fn (mut g Game) event(eve &gg.Event, _ voidptr) {
 
 fn main() {
 	mut game := &Game{}
-	mut player := Player { Position {100, 300}, Size {25, 50}, Vector {0, 0}, 2, []Projectile{}, 3, []Bomb{}, State.idle }
+	mut player := Player { Position {100, 300}, Size {25, 50}, Vector {0, 0}, 100, []Projectile{}, 3, []Bomb{}, State.idle }
 	game.ctx = gg.new_context(
 			bg_color: gx.black
 			width: 600
