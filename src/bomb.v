@@ -1,5 +1,7 @@
 module main
 
+import gx
+
 struct Bomb {
 	Position
 mut:

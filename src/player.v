@@ -1,5 +1,7 @@
 module main
 
+import gx
+
 struct Player {
 	Position
 	Size
@@ -42,6 +44,6 @@ fn (p Player) draw(g Game) {
 	}
 	
 	for bullet in p.bullets {
-		g.ctx.draw_rect_filled(bullet.x, bullet.y, bullet.w, bullet.h, gx.yellow)
+		bullet.draw(g)
 	}
 }

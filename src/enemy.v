@@ -1,5 +1,7 @@
 module main
 
+import gx
+
 struct Enemy {
 	Position
 	Size
