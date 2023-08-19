@@ -5,10 +5,9 @@ import gx
 struct Bomb {
 	Position
 mut:
-	radius f32
+	radius f32 = 0.0
 }
 
-// needs delta for controlled bombing? bombing cooldown
 fn (mut b Bomb) update() {
 	b.radius += 2
 }

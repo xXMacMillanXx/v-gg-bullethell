@@ -6,8 +6,8 @@ struct Enemy {
 	Position
 	Size
 mut:
-	direction Vector
-	bullets []Projectile
+	direction Vector = Vector{0,0}
+	bullets []Projectile = []Projectile{}
 }
 
 fn (mut e Enemy) update() {

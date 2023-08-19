@@ -9,7 +9,6 @@ mut:
 	direction Vector
 }
 
-// needs delta for controlled shooting
 fn (mut p Projectile) update() {
 	p.x += p.direction.x
 	p.y += p.direction.y

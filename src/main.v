@@ -65,7 +65,7 @@ fn (mut g Game) frame(_ voidptr) {
 }
 
 fn (mut g Game) event(eve &gg.Event, _ voidptr) {
-	println("${eve.typ}, ${eve.key_code}, ${eve.char_code}")
+	// println("${eve.typ}, ${eve.key_code}, ${eve.char_code}")
 	match eve.key_code {
 		.up, .w { if eve.typ == .key_down {g.player.direction.y = - g.player.speed} else if eve.typ == .key_up {g.player.direction.y = 0} }
 		.down, .s { if eve.typ == .key_down {g.player.direction.y = g.player.speed} else if eve.typ == .key_up {g.player.direction.y = 0} }
@@ -79,7 +79,7 @@ fn (mut g Game) event(eve &gg.Event, _ voidptr) {
 
 fn main() {
 	mut game := &Game{}
-	mut player := Player { Position {100, 300}, Size {25, 50}, Vector {0, 0}, 100, []Projectile{}, 3, []Bomb{}, State.idle }
+	mut player := Player{Position: Position {100, 300}, Size: Size {25, 50}}
 	game.ctx = gg.new_context(
 			bg_color: gx.black
 			width: 600
@@ -90,7 +90,6 @@ fn main() {
 		)
 	game.player = player
 	game.enemies = []Enemy{}
-	game.enemies << Enemy{ Position{200, 100}, Size{25, 25}, Vector{0, 0}, []Projectile{} }
-	println(game.enemies)
+	game.enemies << Enemy{ Position: Position{200, 100}, Size: Size{25, 25} }
 	game.ctx.run()
 }
