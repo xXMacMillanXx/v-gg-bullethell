@@ -5,6 +5,6 @@ Creating a small project to see how everything is working.
 
 ## Controls
 
-W, A, S, D or up, left, down, right to move around
-space, z or y to shoot
-left_shift or x to bomb
+W, A, S, D or up, left, down, right to move around  
+space, z or y to shoot  
+left_shift or x to bomb  
