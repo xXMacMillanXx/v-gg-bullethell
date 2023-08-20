@@ -17,3 +17,7 @@ fn (mut p Projectile) update() {
 fn (p Projectile) draw(g Game) {
 	g.ctx.draw_rect_filled(p.x, p.y, p.w, p.h, gx.yellow)
 }
+
+fn (p Projectile) is_colliding(c Collidable) bool {
+	return c.coll.is_box_colliding(p.Position, p.Size)
+}

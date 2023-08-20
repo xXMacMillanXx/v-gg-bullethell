@@ -16,11 +16,19 @@ mut:
 	bomb_cd_count f32 = 5.0
 	atk_speed f32 = 2.0
 	atk_count f32 = 2.0
+	coll CollisionBox
+}
+
+fn Player.new(x int, y int, w int, h int) Player {
+	c := CollisionBox{Position{x, y}, Size{w, h}}
+	return Player{ Position: Position{x,y}, Size: Size{w,h}, coll: c}
 }
 
 fn (mut p Player) update(delta f32) {
 	p.x += p.direction.x * delta
 	p.y += p.direction.y * delta
+
+	p.coll.pos_update(Position{p.x, p.y})
 
 	p.bomb_cd_count += delta
 	if p.state.has(.bombing) && p.bomb_cd_count >= p.bomb_cd {

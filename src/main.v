@@ -5,6 +5,8 @@ import gx
 import time
 import math
 
+type Collidable = Enemy | Player
+
 [flag]
 enum State {
 	idle
@@ -69,6 +71,13 @@ fn (mut g Game) frame(_ voidptr) {
 	g.update(delta)
 	g.draw()
 	// println(g.ctx.frame)
+	for bullet in g.player.bullets {
+		for enemy in g.enemies {
+			if bullet.is_colliding(enemy) {
+				g.enemies.delete(g.enemies.index(enemy))
+			}
+		}
+	}
 }
 
 fn (mut g Game) event(eve &gg.Event, _ voidptr) {
@@ -86,7 +95,7 @@ fn (mut g Game) event(eve &gg.Event, _ voidptr) {
 
 fn main() {
 	mut game := &Game{}
-	mut player := Player{Position: Position {100, 300}, Size: Size {25, 50}}
+	mut player := Player.new(100, 300, 25, 50)
 	game.ctx = gg.new_context(
 			bg_color: gx.black
 			width: 600
@@ -97,6 +106,6 @@ fn main() {
 		)
 	game.player = player
 	game.enemies = []Enemy{}
-	game.enemies << Enemy{ Position: Position{200, 100}, Size: Size{25, 25} }
+	game.enemies << Enemy.new(200, 100, 25, 25)
 	game.ctx.run()
 }
