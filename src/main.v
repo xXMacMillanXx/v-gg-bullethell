@@ -3,6 +3,7 @@ module main
 import gg
 import gx
 import time
+import math
 
 [flag]
 enum State {
@@ -16,6 +17,12 @@ mut:
 	x f32
 	y f32
 	// z f32
+}
+
+fn (p Position) distance_to(p2 Position) f32 {
+	x := math.abs(p.x - p2.x)
+	y := math.abs(p.y - p2.y)
+	return math.sqrtf(math.powf(x, 2) + math.powf(y, 2))
 }
 
 struct Vector {
