@@ -48,3 +48,8 @@ fn (c CollisionBox) is_circle_colliding(p Position, radius f32) bool {
 
 	return false
 }
+
+fn (mut c CollisionBox) pos_update(p Position) {
+	c.x = p.x
+	c.y = p.y
+}
