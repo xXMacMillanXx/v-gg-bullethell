@@ -83,10 +83,10 @@ fn (mut g Game) frame(_ voidptr) {
 fn (mut g Game) event(eve &gg.Event, _ voidptr) {
 	// println("${eve.typ}, ${eve.key_code}, ${eve.char_code}")
 	match eve.key_code {
-		.up, .w { if eve.typ == .key_down {g.player.direction.y = - g.player.speed} else if eve.typ == .key_up {g.player.direction.y = 0} }
-		.down, .s { if eve.typ == .key_down {g.player.direction.y = g.player.speed} else if eve.typ == .key_up {g.player.direction.y = 0} }
-		.left, .a { if eve.typ == .key_down {g.player.direction.x = - g.player.speed} else if eve.typ == .key_up {g.player.direction.x = 0} }
-		.right, .d { if eve.typ == .key_down {g.player.direction.x = g.player.speed} else if eve.typ == .key_up {g.player.direction.x = 0} }
+		.up, .w { if eve.typ == .key_down {g.player.direction.y = - g.player.speed} else if eve.typ == .key_up && g.player.direction.y == - g.player.speed {g.player.direction.y = 0} }
+		.down, .s { if eve.typ == .key_down {g.player.direction.y = g.player.speed} else if eve.typ == .key_up && g.player.direction.y == g.player.speed {g.player.direction.y = 0} }
+		.left, .a { if eve.typ == .key_down {g.player.direction.x = - g.player.speed} else if eve.typ == .key_up && g.player.direction.x == - g.player.speed {g.player.direction.x = 0} }
+		.right, .d { if eve.typ == .key_down {g.player.direction.x = g.player.speed} else if eve.typ == .key_up && g.player.direction.x == g.player.speed {g.player.direction.x = 0} }
 		.space, .z, .y { if eve.typ == .key_down {g.player.state.set(.shooting)} else if eve.typ == .key_up {g.player.state.clear(.shooting)} }
 		.left_shift, .x { if eve.typ == .key_down {g.player.state.set(.bombing)} else if eve.typ == .key_up {g.player.state.clear(.bombing)} }
 		else {}
