@@ -25,6 +25,12 @@ fn Player.new(x int, y int, w int, h int) Player {
 }
 
 fn (mut p Player) update(delta f32) {
+	p.direction = Vector{0,0}
+	if p.state.has(.moving_up) { p.direction.y = - p.speed }
+	if p.state.has(.moving_down) { p.direction.y += p.speed }
+	if p.state.has(.moving_left) { p.direction.x = - p.speed }
+	if p.state.has(.moving_right) { p.direction.x += p.speed }
+
 	p.x += p.direction.x * delta
 	p.y += p.direction.y * delta
 
