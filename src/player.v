@@ -1,5 +1,6 @@
 module main
 
+import gg
 import gx
 
 struct Player {
@@ -67,5 +68,17 @@ fn (p Player) draw(g Game) {
 	
 	for bullet in p.bullets {
 		bullet.draw(g)
+	}
+}
+
+fn (mut p Player) event(e &gg.Event) {
+	match e.key_code {
+		.up, .w { if e.typ == .key_down {p.state.set(.moving_up)} else if e.typ == .key_up {p.state.clear(.moving_up)} }
+		.down, .s { if e.typ == .key_down {p.state.set(.moving_down)} else if e.typ == .key_up {p.state.clear(.moving_down)} }
+		.left, .a { if e.typ == .key_down {p.state.set(.moving_left)} else if e.typ == .key_up {p.state.clear(.moving_left)} }
+		.right, .d { if e.typ == .key_down {p.state.set(.moving_right)} else if e.typ == .key_up {p.state.clear(.moving_right)} }
+		.space, .z, .y { if e.typ == .key_down {p.state.set(.shooting)} else if e.typ == .key_up {p.state.clear(.shooting)} }
+		.left_shift, .x { if e.typ == .key_down {p.state.set(.bombing)} else if e.typ == .key_up {p.state.clear(.bombing)} }
+		else {}
 	}
 }

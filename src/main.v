@@ -84,17 +84,9 @@ fn (mut g Game) frame(_ voidptr) {
 	}
 }
 
-fn (mut g Game) event(eve &gg.Event, _ voidptr) {
-	// println("${eve.typ}, ${eve.key_code}, ${eve.char_code}")
-	match eve.key_code {
-		.up, .w { if eve.typ == .key_down {g.player.state.set(.moving_up)} else if eve.typ == .key_up {g.player.state.clear(.moving_up)} }
-		.down, .s { if eve.typ == .key_down {g.player.state.set(.moving_down)} else if eve.typ == .key_up {g.player.state.clear(.moving_down)} }
-		.left, .a { if eve.typ == .key_down {g.player.state.set(.moving_left)} else if eve.typ == .key_up {g.player.state.clear(.moving_left)} }
-		.right, .d { if eve.typ == .key_down {g.player.state.set(.moving_right)} else if eve.typ == .key_up {g.player.state.clear(.moving_right)} }
-		.space, .z, .y { if eve.typ == .key_down {g.player.state.set(.shooting)} else if eve.typ == .key_up {g.player.state.clear(.shooting)} }
-		.left_shift, .x { if eve.typ == .key_down {g.player.state.set(.bombing)} else if eve.typ == .key_up {g.player.state.clear(.bombing)} }
-		else {}
-	}
+fn (mut g Game) event(e &gg.Event, _ voidptr) {
+	// println("${e.typ}, ${e.key_code}, ${e.char_code}")
+	g.player.event(e)
 }
 
 fn main() {
