@@ -1,5 +1,7 @@
 module main
 
+import gg
+
 enum States {
 	menu
 	game
@@ -11,61 +13,11 @@ mut:
 	// add methods
 	update(mut Game, f32)
 	draw(mut Game)
-	exit()
+	event(mut Game, &gg.Event)
+	exit(mut Game)
 }
 
-struct MenuState {
-mut:
-	sm &StateMachine
-}
-
-fn (mut s MenuState) update(mut g Game, delta f32) {
-	// switch to game and skip menu
-	g.states.change_state(.game)
-}
-
-fn (mut s MenuState) draw(mut g Game) {
-	// show menu
-}
-
-fn (mut s MenuState) exit() {
-	// exit game / application
-}
-
-struct GameState {
-mut:
-	sm &StateMachine
-}
-
-fn (mut s GameState) update(mut g Game, delta f32) {
-	g.player.update(delta)
-	for mut enemy in g.enemies {
-		enemy.update()
-	}
-	for bullet in g.player.bullets {
-		for enemy in g.enemies {
-			if bullet.is_colliding(enemy) {
-				g.enemies.delete(g.enemies.index(enemy))
-			}
-		}
-	}
-}
-
-fn (mut s GameState) draw(mut g Game) {
-	// start game / level
-	g.ctx.begin()
-	g.player.draw(g)
-	for enemy in g.enemies {
-		enemy.draw(g)
-	}
-	g.ctx.end()
-}
-
-fn (mut s GameState) exit() {
-	// exit level -> menu
-	s.sm.change_state(.menu)
-}
-
+[heap]
 struct StateMachine {
 mut:
 	states map[States]State
@@ -77,7 +29,7 @@ fn StateMachine.new() &StateMachine {
 	mut sm := &StateMachine { current: unsafe{nil} }
 	mut st := map[States]State {}
 
-	st[.menu] = MenuState { sm }
+	st[.menu] = MenuState.new(sm)
 	st[.game] = GameState { sm }
 	sm.states = &st
 

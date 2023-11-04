@@ -72,7 +72,11 @@ fn (mut g Game) frame(_ voidptr) {
 
 fn (mut g Game) event(e &gg.Event, _ voidptr) {
 	// println("${e.typ}, ${e.key_code}, ${e.char_code}")
-	g.player.event(e)
+	g.states.current.event(mut g, e)
+	// global exit event
+	if e.typ == .key_down && e.key_code == .escape {
+		g.states.current.exit(mut g)
+	}
 }
 
 fn main() {
