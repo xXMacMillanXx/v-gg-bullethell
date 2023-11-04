@@ -10,11 +10,10 @@ mut:
 
 fn MenuState.new(sm &StateMachine) MenuState {
 	mut b := Button.new(100, 100, 100, 50)
-	//mut ref := &*sm
-	//action := fn [mut ref] () {
-	//	ref.change_state(.game)
-	//}
-	//b.on_click(action)
+	action := fn (mut g Game, e &gg.Event) {
+		g.states.change_state(.game)
+	}
+	b.on_click(action)
 	return MenuState{ sm, b }
 }
 
