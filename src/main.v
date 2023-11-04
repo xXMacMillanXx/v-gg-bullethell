@@ -68,13 +68,6 @@ fn (mut g Game) frame(_ voidptr) {
 	g.update(delta)
 	g.draw()
 	// println(g.ctx.frame)
-	for bullet in g.player.bullets {
-		for enemy in g.enemies {
-			if bullet.is_colliding(enemy) {
-				g.enemies.delete(g.enemies.index(enemy))
-			}
-		}
-	}
 }
 
 fn (mut g Game) event(e &gg.Event, _ voidptr) {
