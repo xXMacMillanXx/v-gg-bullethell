@@ -10,7 +10,7 @@ mut:
 	direction Vector = Vector{0,0}
 	bullets []Projectile = []Projectile{}
 	bombs []Bomb = []Bomb{}
-	state State = State.idle
+	state EntityState = EntityState.idle
 	speed int = 300
 	bomb_count int = 3
 	bomb_cd f32 = 5.0

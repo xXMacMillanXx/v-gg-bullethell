@@ -8,7 +8,7 @@ import math
 type Collidable = Enemy | Player
 
 [flag]
-enum State {
+enum EntityState {
 	idle
 	shooting
 	bombing
@@ -49,23 +49,16 @@ mut:
 	ctx gg.Context
 	player Player
 	enemies []Enemy
+	states StateMachine
 	frame_timer time.StopWatch = time.new_stopwatch()
 }
 
 fn (mut g Game) update(delta f32) {
-	g.player.update(delta)
-	for mut enemy in g.enemies {
-		enemy.update()
-	}
+	g.states.current.update(mut g, delta)
 }
 
 fn (mut g Game) draw() {
-	g.ctx.begin()
-	g.player.draw(g)
-	for enemy in g.enemies {
-		enemy.draw(g)
-	}
-	g.ctx.end()
+	g.states.current.draw(mut g)
 }
 
 fn (mut g Game) frame(_ voidptr) {
@@ -75,22 +68,19 @@ fn (mut g Game) frame(_ voidptr) {
 	g.update(delta)
 	g.draw()
 	// println(g.ctx.frame)
-	for bullet in g.player.bullets {
-		for enemy in g.enemies {
-			if bullet.is_colliding(enemy) {
-				g.enemies.delete(g.enemies.index(enemy))
-			}
-		}
-	}
 }
 
 fn (mut g Game) event(e &gg.Event, _ voidptr) {
 	// println("${e.typ}, ${e.key_code}, ${e.char_code}")
-	g.player.event(e)
+	g.states.current.event(mut g, e)
+	// global exit event
+	if e.typ == .key_down && e.key_code == .escape {
+		g.states.current.exit(mut g)
+	}
 }
 
 fn main() {
-	mut game := &Game{}
+	mut game := &Game{ states: StateMachine.new() }
 	mut player := Player.new(100, 300, 25, 50)
 	game.ctx = gg.new_context(
 			bg_color: gx.black
