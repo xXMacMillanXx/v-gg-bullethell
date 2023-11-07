@@ -30,7 +30,7 @@ fn StateMachine.new() &StateMachine {
 	mut st := map[States]State {}
 
 	st[.menu] = MenuState.new(sm)
-	st[.game] = GameState { sm }
+	st[.game] = GameState.new(sm)
 	sm.states = &st
 
 	sm.change_state(.menu)

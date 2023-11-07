@@ -5,34 +5,42 @@ import gg
 struct GameState {
 mut:
 	sm &StateMachine
+	player Player
+	enemies []Enemy
+}
+
+fn GameState.new(sm &StateMachine) GameState {
+	mut player := Player.new(100, 300, 25, 50)
+	mut enemies := []Enemy{}
+	enemies << Enemy.new(200, 100, 25, 25)
+	return GameState{ sm, player, enemies }
 }
 
 fn (mut s GameState) update(mut g Game, delta f32) {
-	g.player.update(delta)
-	for mut enemy in g.enemies {
+	s.player.update(delta)
+	for mut enemy in s.enemies {
 		enemy.update()
 	}
-	for bullet in g.player.bullets {
-		for enemy in g.enemies {
+	for bullet in s.player.bullets {
+		for enemy in s.enemies {
 			if bullet.is_colliding(enemy) {
-				g.enemies.delete(g.enemies.index(enemy))
+				s.enemies.delete(s.enemies.index(enemy))
 			}
 		}
 	}
 }
 
 fn (mut s GameState) draw(mut g Game) {
-	// start game / level
 	g.ctx.begin()
-	g.player.draw(g)
-	for enemy in g.enemies {
+	s.player.draw(g)
+	for enemy in s.enemies {
 		enemy.draw(g)
 	}
 	g.ctx.end()
 }
 
 fn (mut s GameState) event(mut g Game, e &gg.Event) {
-	g.player.event(e)
+	s.player.event(e)
 }
 
 fn (mut s GameState) exit(mut g Game) {

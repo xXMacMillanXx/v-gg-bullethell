@@ -47,8 +47,6 @@ struct Size {
 struct Game {
 mut:
 	ctx gg.Context
-	player Player
-	enemies []Enemy
 	states StateMachine
 	frame_timer time.StopWatch = time.new_stopwatch()
 }
@@ -81,7 +79,6 @@ fn (mut g Game) event(e &gg.Event, _ voidptr) {
 
 fn main() {
 	mut game := &Game{ states: StateMachine.new() }
-	mut player := Player.new(100, 300, 25, 50)
 	game.ctx = gg.new_context(
 			bg_color: gx.black
 			width: 600
@@ -90,8 +87,5 @@ fn main() {
 			frame_fn: game.frame
 			event_fn: game.event
 		)
-	game.player = player
-	game.enemies = []Enemy{}
-	game.enemies << Enemy.new(200, 100, 25, 25)
 	game.ctx.run()
 }

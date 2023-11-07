@@ -21,7 +21,6 @@ fn (mut s MenuState) update(mut g Game, delta f32) {
 }
 
 fn (mut s MenuState) draw(mut g Game) {
-	// show menu
 	g.ctx.begin()
 	s.btn_start.draw(g)
 	g.ctx.end()
