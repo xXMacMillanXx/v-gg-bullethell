@@ -13,6 +13,8 @@ fn GameState.new(sm &StateMachine) GameState {
 	mut player := Player.new(100, 300, 25, 50)
 	mut enemies := []Enemy{}
 	enemies << Enemy.new(200, 100, 25, 25)
+	enemies << Enemy.new(300, 100, 25, 25)
+	enemies << Enemy.new(400, 100, 25, 25)
 	return GameState{ sm, player, enemies }
 }
 
@@ -24,6 +26,13 @@ fn (mut s GameState) update(mut g Game, delta f32) {
 	for bullet in s.player.bullets {
 		for enemy in s.enemies {
 			if bullet.is_colliding(enemy) {
+				s.enemies.delete(s.enemies.index(enemy))
+			}
+		}
+	}
+	for bomb in s.player.bombs {
+		for enemy in s.enemies {
+			if bomb.is_colliding(enemy) {
 				s.enemies.delete(s.enemies.index(enemy))
 			}
 		}

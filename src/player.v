@@ -47,6 +47,9 @@ fn (mut p Player) update(delta f32) {
 	}
 	for mut bomb in p.bombs {
 		bomb.update()
+		if bomb.is_stoppable {
+			p.bombs.delete(p.bombs.index(bomb))
+		}
 	}
 
 	p.atk_count += delta

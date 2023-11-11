@@ -5,6 +5,7 @@ struct CollisionBox {
 	Size
 }
 
+// is_point_colliding checks if the given Position `p` is inside the CollisionBox
 fn (c CollisionBox) is_point_colliding(p Position) bool {
 	if p.x >= c.x && p.x <= (c.x + c.w) && p.y >= c.y && p.y <= (c.y + c.h) {
 		return true
@@ -13,6 +14,7 @@ fn (c CollisionBox) is_point_colliding(p Position) bool {
 	return false
 }
 
+// is_box_colliding checks if any part of a box at Position `p` with Size `s` is inside the CollisionBox
 fn (c CollisionBox) is_box_colliding(p Position, s Size) bool {
 	if p.x >= (c.x - s.w) && p.x <= (c.x + c.w) && p.y >= (c.y - s.h) && p.y <= (c.y + c.h) {
 		return true
@@ -21,6 +23,7 @@ fn (c CollisionBox) is_box_colliding(p Position, s Size) bool {
 	return false
 }
 
+// is_circle_colliding checks if any part of a circle at Position `p` with `radius` is inside the CollisionBox
 fn (c CollisionBox) is_circle_colliding(p Position, radius f32) bool {
 	mut x := f32(0.0)
 	mut y := f32(0.0)
