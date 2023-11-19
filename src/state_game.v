@@ -7,6 +7,7 @@ mut:
 	sm &StateMachine
 	player Player
 	enemies []Enemy
+	btn_ret Button
 }
 
 fn GameState.new(sm &StateMachine) GameState {
@@ -15,7 +16,12 @@ fn GameState.new(sm &StateMachine) GameState {
 	enemies << Enemy.new(200, 100, 25, 25)
 	enemies << Enemy.new(300, 100, 25, 25)
 	enemies << Enemy.new(400, 100, 25, 25)
-	return GameState{ sm, player, enemies }
+	mut btn := Button.new(100, 100, 100, 50, "Menu")
+	action := fn (mut g Game, e &gg.Event) {
+		g.states.change_state(.menu)
+	}
+	btn.on_click(action)
+	return GameState{ sm, player, enemies, btn }
 }
 
 fn (mut s GameState) update(mut g Game, delta f32) {
@@ -45,11 +51,17 @@ fn (mut s GameState) draw(mut g Game) {
 	for enemy in s.enemies {
 		enemy.draw(g)
 	}
+	if s.enemies.len == 0 {
+		s.btn_ret.draw(g)
+	}
 	g.ctx.end()
 }
 
 fn (mut s GameState) event(mut g Game, e &gg.Event) {
 	s.player.event(e)
+	if s.enemies.len == 0 {
+		s.btn_ret.event(mut g, e)
+	}
 }
 
 fn (mut s GameState) exit(mut g Game) {

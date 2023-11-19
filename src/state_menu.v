@@ -9,7 +9,7 @@ mut:
 }
 
 fn MenuState.new(sm &StateMachine) MenuState {
-	mut b := Button.new(100, 100, 100, 50)
+	mut b := Button.new(100, 100, 100, 50, "Start")
 	action := fn (mut g Game, e &gg.Event) {
 		g.states.change_state(.game)
 	}
