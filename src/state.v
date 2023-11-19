@@ -17,7 +17,7 @@ mut:
 	exit(mut Game)
 }
 
-[heap]
+@[heap]
 struct StateMachine {
 mut:
 	states map[States]State

@@ -7,7 +7,7 @@ import math
 
 type Collidable = Enemy | Player
 
-[flag]
+@[flag]
 enum EntityState {
 	idle
 	shooting
